@@ -13,18 +13,15 @@ app.use((req, res, next) => {
 // Rota para fazer requisições ao servidor pfsv.io
 app.get("/proxy", async (req, res) => {
   try {
-    const { url, password, action } = req.query;
-    if (!url || !password || !action) {
-      return res.status(400).send("Missing parameters: 'url', 'password', or 'action'");
+    const { url } = req.query;
+    if (!url) {
+      return res.status(400).send("Missing 'url' parameter");
     }
 
-    // Montar a URL completa com todos os parâmetros
-    const fullUrl = `${url}&password=${password}&action=${action}`;
-
-    console.log(`Fazendo requisição para:`, fullUrl);
+    console.log(`Fazendo requisição para:`, url);
 
     // Adicionar cabeçalhos personalizados
-    const response = await axios.get(fullUrl, {
+    const response = await axios.get(url, {
       headers: {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
         "Accept-Encoding": "gzip, deflate, br",
